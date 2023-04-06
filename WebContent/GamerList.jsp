@@ -6,44 +6,64 @@
 	<c:param name="title" value="ゲーマー一覧"/>
 	<c:param name="content">
 
-		<form action="SearchServlet" method="post">
-			<table class="table">
-				<tr>
-					<td><input type="text" name="name" placeholder="プレイヤー名"></td>
-				</tr>
-				<tr>
-					<td><input type="text" name="teamName" placeholder="チーム名"></td>
-				</tr>
-				<tr>
-					<td><input type="submit" value="検索"></td>
-				</tr>
-			</table>
-		</form>
+		<!-- プレイヤー検索欄 -->
+		<div class="wrapper">
+			<div class="wrapper-top">
+				<form action="SearchServlet" method="post" class="form-inline">
+					<div class="form-row">
+						<div class="form-group col-auto">
+							<input type="text" name="name" placeholder="プレイヤー名" class="form-control">
+						</div>
+						<div class="form-group col-auto">
+							<input type="text" name="teamName" placeholder="チーム名" class="form-control">
+						</div>
+						<div class="form-group col-auto">
+							<button type="submit" class="form-control btn btn-info"><i class="fas fa-search"></i></button>
+						</div>
 
-		<form action="GamerServlet" method="post">
-			<c:set var="userLevel" value="${sessionScope.LOGIN_USER.level_user}"/>
+						<!-- 選手登録表示判定 -->
+							<c:set var="userLevel" value="${sessionScope.LOGIN_USER.level_user}"/>
+							<c:if test="${userLevel == 2}">
+								<input type="submit" class="form-control btn btn-warning" formaction="insertGamer.jsp" value="選手登録">
+							</c:if>
+					</div>
+				</form>
+			</div>
 
-			<c:if test="${userLevel > 0}">
-				<c:forEach var="sortGamer" items="${SORT_GAMER_LIST}">
-					<c:out value="${sortGamer.name_gamer}" />
-					<button type="submit"  name="gamerId" value="${sortGamer.id_gamer}" >詳しく</button>
-				</c:forEach>
-			</c:if>
 
-			<c:if test="${userLevel == 2}">
-				<c:url var="insertGamer" value="/insertGamer.jsp" />
-				<a href="${insertGamer}">登録</a>
-			</c:if>
-
-			<table>
+			<!-- 一覧表示  -->
+			<div class="wrapper-middle">
 				<c:forEach var="gamer" items="${GAMER_LIST}">
-					<tr>
-						<td><c:out value="${gamer.name_gamer}" /></td>
-						<td><button type="submit" name="gamerId" value="${gamer.id_gamer}">詳しく</button>
-					</tr>
+					<div class="card shadow-lg rounded border wrapper-card">
+					  <img class="card-img-top img-fluid" src="img/${gamer.name_gamer}.jpg" alt="Card image cap">
+					  <div class="card-body">
+					    <a href="GamerServlet?${gamer.id_gamer}" class="card-link h3">${gamer.id_gamer}：${gamer.name_gamer}</a>
+					    <p class="card-text over-flow">${gamer.profile_gamer}</p>
+					  </div>
+					</div>
 				</c:forEach>
-			</table>
-		</form>
+			</div>
 
+			<!-- ページネーション -->
+			<div class="paging_button col-md-6 offset-md-3">
+				<c:import url="_paging.jsp"/>
+			</div>
+		</div>
+
+
+			<!-- 注目選手表示 -->
+			<c:if test="${userLevel > 0}">
+				<div class="aside">
+					<h3>注目選手！</h3>
+					<c:forEach var="sortGamer" items="${SORT_GAMER_LIST}">
+						<div class="card shadow-lg rounded border aside-card">
+						  <img class="card-img-top" src="img/${sortGamer.name_gamer}.jpg" alt="Card image cap" >
+						  <div class="card-body">
+						    <a href="GamerServlet?${sortGamer.id_gamer}" class="card-link h5">${sortGamer.name_gamer}</a>
+						  </div>
+						</div>
+					</c:forEach>
+				</div>
+			</c:if>
 	</c:param>
 </c:import>

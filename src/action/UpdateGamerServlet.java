@@ -35,11 +35,12 @@ public class UpdateGamerServlet extends HttpServlet {
 
 		try(Connection con = DbUtility.connectionDb()) {
 			new GamerDaoImpl().update(con, strings);
-			request.setAttribute("ACTION_MESSAGE", "プレイヤー情報を更新しました");
+			request.getSession().setAttribute("COMPLETION_MESSAGE", "プレイヤー情報を更新しました");
 		} catch(ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-			request.setAttribute("ACTION_MESSAGE", "更新に失敗しました");
+			request.getSession().setAttribute("ERROR_MESSAGE", "更新に失敗しました");
 		}
+
 		response.sendRedirect("/GamerApp/GamerListServlet");
 	}
 

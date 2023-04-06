@@ -24,9 +24,9 @@ public interface UserDao {
 	 * @param strings　ログインに必要な情報群
 	 * @return ログインしたUserインスタンス
 	 * @throws SQLException
+	 * @throws IndexOutOfBoundsException
 	 */
 	User login(Connection con, String...strings) throws SQLException;
-
 
 	/**
 	 * 適切なユーザー権限レベルを、パスワード情報を基に付与
@@ -36,6 +36,13 @@ public interface UserDao {
 	 */
 	void userLevelUp(Connection con, String password) throws SQLException;
 
+	/**
+	 * ユーザー権限レベルを0にする
+	 * @param con データベース接続情報
+	 * @param id ログインセッションユーザーのid
+	 * @throws SQLException
+	 */
+	void logout(Connection con, int id) throws SQLException;
 
 	/**
 	 * ResultSet → ArrayListへ変換

@@ -27,14 +27,14 @@ public class UserDaoImpl implements UserDao {
 		sql = SELECT + "WHERE email_user = ?";
 		PreparedStatement pstmt2 = con.prepareStatement(sql);
 		pstmt2.setString(1, strings[2]);
-		ResultSet rs = pstmt.executeQuery();
+		ResultSet rs = pstmt2.executeQuery();
 		User signupUser = getAll(rs).get(0);
 		pstmt.close();
 		return signupUser;
 	}
 
 	@Override
-	public User login(Connection con, String...strings) throws SQLException {
+	public User login(Connection con, String...strings) throws SQLException, IndexOutOfBoundsException {
 		User user = new User();
 		String sql = SELECT + "WHERE email_user = ? AND password_user = ?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -58,6 +58,15 @@ public class UserDaoImpl implements UserDao {
 		}
 		pstmt.setString(2, password);
 		pstmt.executeUpdate();
+		pstmt.close();
+	}
+
+	@Override
+	public void logout(Connection con, int id) throws SQLException {
+	    String sql = UPDATE + "level_user = 0 WHERE id_user = ?";
+	    PreparedStatement pstmt = con.prepareStatement(sql);
+	    pstmt.setInt(1, id);
+	    pstmt.executeUpdate();
 		pstmt.close();
 	}
 

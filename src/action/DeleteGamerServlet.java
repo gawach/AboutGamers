@@ -31,13 +31,11 @@ public class DeleteGamerServlet extends HttpServlet {
 
 		try(Connection con = DbUtility.connectionDb()) {
 			new GamerDaoImpl().delete(con, gamerId);
-			request.setAttribute("ACTION_MESSAGE", "ゲーマーを削除しました。");
+			request.setAttribute("ACTION_MESSAGE", "プレイヤーを削除しました。");
 		} catch(ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-			String move = "GamerList.jsp";
-			request.setAttribute("ACTION_MESSAGE", "ゲーマーの削除に失敗しました。");
-			request.getRequestDispatcher(move).forward(request, response);
 		}
+
 		response.sendRedirect("/GamerApp/GamerListServlet");
 	}
 

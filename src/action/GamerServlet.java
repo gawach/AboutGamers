@@ -24,23 +24,21 @@ public class GamerServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String move = "Gamer.jsp";
-		String gamerId = request.getParameter("gamerId");
+		String gamerId = request.getQueryString();
 
 		try(Connection con = DbUtility.connectionDb()) {
 			Gamer gamer = new GamerDaoImpl().find(con, gamerId);
 			request.setAttribute("GAMER", gamer);
 		} catch(ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-			request.setAttribute("ACTION_MESSAGE", "選択したゲーマーは存在しません。");
-			response.sendRedirect("/GamerApp/GamerListServlet");
 		}
 
 		request.getRequestDispatcher(move).forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 	}
 
 }

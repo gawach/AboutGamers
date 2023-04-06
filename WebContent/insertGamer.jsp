@@ -7,27 +7,23 @@
 	<c:param name="content">
 
 		<form action="InsertGamerCheckServlet" method="post">
-			<table>
-				<tr>
-					<td>プレイヤー名：</td>
-					<td><input type="text" name="name" required></td>
-				</tr>
-				<tr>
-					<td>チーム名：</td>
-					<td><input type="text" name="teamName" required></td>
-				</tr>
-				<tr>
-					<td>ゲーム内設定：</td>
-					<td><input type="text" name="settings" required></td>
-				</tr>
-				<tr>
-					<td>選手情報</td>
-					<td><input type="text" name="profile" required></td>
-				</tr>
-				<tr>
-					<td><input type="submit" value="登録確認"></td>
-				</tr>
-			</table>
+			<div class="form-group">
+				<label for="name">プレイヤー名</label>
+				<input type="text" name="name" class="form-control" required>
+			</div>
+			<div class="form-group">
+				<label for="teamName">チーム名</label>
+				<input type="text" name="teamName" class="form-control" required>
+			</div>
+			<div class="form-group">
+				<label for="settings">ゲーム内設定</label>
+				<input type="text" name="settings" class="form-control" required>
+			</div>
+			<div class="form-group">
+				<label for="profile">選手情報</label>
+				<textarea  name="profile" class="form-control" required>${PROFILE}</textarea>
+			</div>
+			<input type="submit" value="登録確認" class="btn btn-dark">
 		</form>
 
 	</c:param>

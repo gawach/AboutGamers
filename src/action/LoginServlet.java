@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import db.DbUtility;
 import db.UserDaoImpl;
@@ -25,7 +24,7 @@ public class LoginServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		request.getRequestDispatcher("login.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,16 +35,14 @@ public class LoginServlet extends HttpServlet {
 			strings[2] = request.getParameter("pass");
 			User loginUser = new UserDaoImpl().login(con, strings);
 
-			HttpSession session = request.getSession();
-			session.setAttribute("LOGIN_USER", loginUser);
-			request.setAttribute("ACTION_MESSAGE", "ログインしました。");
-		} catch(ClassNotFoundException | SQLException e) {
+			request.getSession().setAttribute("LOGIN_USER", loginUser);
+			request.getSession().setAttribute("COMPLETION_MESSAGE", "ログインしました");
+		} catch(ClassNotFoundException | SQLException | IndexOutOfBoundsException e) {
 			e.printStackTrace();
+			request.setAttribute("ERROR_MESSAGE", "ログインに失敗しました");
 			String move = "login.jsp";
-			request.setAttribute("ACTION_MESSAGE", "ログインに失敗しました。");
 			request.getRequestDispatcher(move).forward(request, response);
 		}
-
 		response.sendRedirect("/GamerApp/GamerListServlet");
 	}
 }

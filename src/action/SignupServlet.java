@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import db.DbUtility;
 import db.UserDaoImpl;
@@ -24,6 +23,7 @@ public class SignupServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("signup.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,14 +40,14 @@ public class SignupServlet extends HttpServlet {
 				throw new NumberFormatException();
 			}
 			User signupUser = new UserDaoImpl().signup(con, strings);
-			HttpSession session = request.getSession();
-			session.setAttribute("LOGIN_USER", signupUser);
+			request.getSession().setAttribute("LOGIN_USER", signupUser);
+			request.getSession().setAttribute("COMPLETION_MESSAGE", "ユーザーが登録されました");
 		} catch (NumberFormatException e) {
-			request.setAttribute("ACTION_MESSAGE", "パスワードが一致しません");
+			request.getSession().setAttribute("ERROR_MESSAGE", "パスワードが一致しません");
 			request.getRequestDispatcher(move).forward(request, response);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-			request.setAttribute("ACTION_MESSAGE", "ユーザーを登録できませんでした");
+			request.getSession().setAttribute("ERROR_MESSAGE", "ユーザーを登録できませんでした");
 			request.getRequestDispatcher(move).forward(request, response);
 		}
 		response.sendRedirect("/GamerApp/GamerListServlet");

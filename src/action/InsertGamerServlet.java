@@ -27,7 +27,6 @@ public class InsertGamerServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String move = "GamerList.jsp";
 		String[] strings = new String[5];
 		strings[1] = request.getParameter("name");
 		strings[2] = request.getParameter("teamName");
@@ -36,11 +35,10 @@ public class InsertGamerServlet extends HttpServlet {
 
 		try(Connection con = DbUtility.connectionDb()) {
 			new GamerDaoImpl().insert(con, strings);
-			request.setAttribute("ACTION_MESSAGE", "ゲーマーを登録しました。");
+			request.setAttribute("COMPLETION_MESSAGE", "プレイヤーを登録しました");
 		} catch(ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-			request.setAttribute("ACTION_MESSAGE", "ゲーマーの登録に失敗しました。");
-			request.getRequestDispatcher(move).forward(request, response);
+			request.setAttribute("ERROR_MESSAGE", "プレイヤーを登録できませんでした");
 		}
 
 		response.sendRedirect("/GamerApp/GamerListServlet");

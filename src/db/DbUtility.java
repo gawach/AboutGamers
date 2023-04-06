@@ -5,10 +5,15 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbUtility {
-	public static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
-	public static final String DB_INFO = "jdbc:mysql://127.0.0.1:3306/techdb";
-	public static final String USER_NAME = "seed";
-	public static final String USER_PASS = "Tech_123";
+//	public static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
+//	public static final String DB_INFO = "jdbc:mysql://127.0.0.1:3306/techdb";
+//	public static final String USER_NAME = "seed";
+//	public static final String USER_PASS = "Tech_123";
+
+	public static final String DRIVER_NAME = "com.mysql.jdbc.Driver";
+	public static final String DB_INFO = "jdbc:mysql://localhost/techseed?useSSL=false";
+	public static final String USER_NAME = "root";
+	public static final String USER_PASS = "password";
 
 	/**
 	 * データベース接続
